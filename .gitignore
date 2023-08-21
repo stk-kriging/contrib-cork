@@ -1,0 +1,18 @@
+scripts/results/*
+requirements/chebfun/
+requirements/stk/
+requirements/vfit3/
+requirements/vfit3.zip
+requirements/vfit3_version.txt
+
+# autosave
+*.asv
+*.m~
+
+# Compiled MEX files
+*.mex
+*.mexglx
+*.mexw32
+*.mexw64
+*.mexa64
+*.mexmaci64
