@@ -10,6 +10,10 @@ __Rational kernel-based interpolation for complex-valued frequency response func
 
 ## How to use it?
 
+This software should run with any reasonably recent version of Matlab.
+
+FIXME: Be more specific.  Make it work on Octave too.
+
 Start Matlab from the root of the project: the initialization script
 ([`startup.m`](./startup.m)) will automatically download the
 dependencies and then set the path.
@@ -28,20 +32,25 @@ The code is organized as follows:
 
 ## Dependencies
 
-This repository makes use of three dependencies:
+This software has three dependencies:
 [Chebfun](https://www.chebfun.org/),
 [STK](https://stk-kriging.github.io),
 and [VFIT3](https://www.sintef.no/projectweb/vectorfitting/).
 
-The startup script will automatically download a suitable version of
-each dependency.  For Chebfun and STK, this is done by cloning the git
-repository, therefore git is needed.
+Only STK is actually needed to use the proposed method.  The other two
+(Chebfun, VFIT3) provide the state-of-the-art methods AAA and vector
+fitting, used in the benchmarking scripts.
 
-If git is not installed on your machine, or if for some reason the
-startup script does not work for you, you can alternatively download
-manually the source code for each of the dependencies and unpack
-inside the `requirements` directory with a suitable directory name
-(cf. [`startup.m`](./startup.m)).
+The startup script will automatically download, on its first run, a
+suitable version of each dependency.  For Chebfun and STK, this is
+done by cloning the git repository (therefore `git` is needed).  For
+VFIT3, the downloaded file is checked for correctness using its SHA1
+checksum (on Linux/Mac, `sha1sum` is needed for that).
+
+If for some reason the startup script does not work for you, you can
+alternatively download manually the source code for each of the
+dependencies and unpack inside the `requirements` directory with a
+suitable directory name (cf. [`startup.m`](./startup.m)).
  * Chebfun: https://github.com/chebfun/chebfun/archive/refs/heads/master.zip
  * STK: https://github.com/n-georg/stk/archive/refs/heads/lm-param.zip
  * VFIT3: https://www.sintef.no/globalassets/project/vectfit/vfit3.zip
