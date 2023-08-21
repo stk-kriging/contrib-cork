@@ -26,7 +26,7 @@ scripts needed to reproduce the results of the article.
 The code is organized as follows:
  * [`BenchmarkFunctions`](./BenchmarkFunctions): test cases
  * [`CplxGPR`](./CplxGPR): main functions implementing the proposed method
- * [`requirements`](./requirements): helper function for dependencies
+ * [`dependencies`](./dependencies): helper function for dependencies
  * [`scripts`](./scripts): scripts to reproduce the results
  * [`utils`](./utils): various helper functions, wrapper for other methods, etc.
 
@@ -49,7 +49,7 @@ checksum (on Linux/Mac, `sha1sum` is needed for that).
 
 If for some reason the startup script does not work for you, you can
 alternatively download manually the source code for each of the
-dependencies and unpack inside the `requirements` directory with a
+dependencies and unpack inside the `dependencies` directory with a
 suitable directory name (cf. [`startup.m`](./startup.m)).
  * Chebfun: https://github.com/chebfun/chebfun/archive/refs/heads/master.zip
  * STK: https://github.com/n-georg/stk/archive/refs/heads/lm-param.zip
