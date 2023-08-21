@@ -19,7 +19,7 @@ try
     cd (requirements);
 
     % Try to get SHA1 using sha1sum
-    cmd = 'sha1sum requirements/vfit3.zip | grep -o "^\S*"';
+    cmd = 'sha1sum vfit3.zip | grep -o "^\S*"';
     [status, sha1] = system (cmd);
     if status == 0
         sha1 = lower (strtrim (sha1));
