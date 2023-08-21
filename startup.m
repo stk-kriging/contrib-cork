@@ -4,21 +4,21 @@ project_root = fileparts (mfilename ('fullpath'));
 cd (project_root);
 
 % Base directory for dependencies
-requirements = fullfile (project_root, 'requirements');
+depend_dir = fullfile (project_root, 'dependencies');
 
 % Add subdirectories to the path
 addpath (fullfile (project_root, 'BenchmarkFunctions'));
 addpath (fullfile (project_root, 'CplxGPR'));
 addpath (fullfile (project_root, 'utils'));
-addpath (requirements);
+addpath (depend_dir);
 
 
 %% Download dependencies if needed
 
 % Directory names for dependencies
-chebfun_dir = fullfile (requirements, 'chebfun');
-stk_dir     = fullfile (requirements, 'stk');
-vfit3_dir   = fullfile (requirements, 'vfit3');
+chebfun_dir = fullfile (depend_dir, 'chebfun');
+stk_dir     = fullfile (depend_dir, 'stk');
+vfit3_dir   = fullfile (depend_dir, 'vfit3');
 
 % Download chebfun if needed
 if ~ exist (chebfun_dir, 'dir')
@@ -56,4 +56,4 @@ vfit3_identify_revision ();
 
 cd (here);
 
-clear here project_root requirements chebfun_dir stk_dir vfit3_dir
+clear here project_root depend_dir chebfun_dir stk_dir vfit3_dir

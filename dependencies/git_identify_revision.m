@@ -2,8 +2,8 @@ function git_identify_revision (name)
 
 here = pwd ();
 
-requirements = fileparts (mfilename ('fullpath'));
-repo = fullfile (requirements, name);
+depend_dir = fileparts (mfilename ('fullpath'));
+repo = fullfile (depend_dir, name);
 
 if ~ exist (repo, 'dir')
     error (sprintf ('Directory not found: %s\n', repo)); %#ok<SPERR>

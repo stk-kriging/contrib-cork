@@ -1,9 +1,9 @@
 function git_clone_dependency (name, url, sha1)
 
-requirements = fileparts (mfilename ('fullpath'));
+depend_dir = fileparts (mfilename ('fullpath'));
 
 % Destination directory (where the repo will be cloned)
-dst = fullfile (requirements, name);
+dst = fullfile (depend_dir, name);
 
 if exist (dst, 'dir')
     error (sprintf ('Directory already exists: %s\n', dst)); %#ok<SPERR>

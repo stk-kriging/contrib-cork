@@ -1,9 +1,9 @@
 scripts/results/*
-requirements/chebfun/
-requirements/stk/
-requirements/vfit3/
-requirements/vfit3.zip
-requirements/vfit3_version.txt
+dependencies/chebfun/
+dependencies/stk/
+dependencies/vfit3/
+dependencies/vfit3.zip
+dependencies/vfit3_version.txt
 
 # autosave
 *.asv
