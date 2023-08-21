@@ -46,6 +46,14 @@ inside the `requirements` directory with a suitable directory name
  * STK: https://github.com/n-georg/stk/archive/refs/heads/lm-param.zip
  * VFIT3: https://www.sintef.no/globalassets/project/vectfit/vfit3.zip
 
+## Authors
+
+Most of the code for this research has been written by Niklas Georg,
+with occasional contributions by Julien Bect.
+
+The file [barylag.m](./utils/barylag.m) has been written by Greg von
+Winckel.
+
 ## Copyright & license
 
 Copyright 2023 TU Braunschweig & CentraleSupélec
