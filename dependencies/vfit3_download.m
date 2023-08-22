@@ -18,24 +18,36 @@ try
     here = pwd ();
     cd (depend_dir);
 
-    % Try to get SHA1 using sha1sum
-    cmd = 'sha1sum vfit3.zip | grep -o "^\S*"';
-    [status, sha1] = system (cmd);
-    if status == 0
+    if ~ ispc % Linux/Mac/BSD..
+
+        % First, try to get SHA1 using sha1sum
+        cmd = 'sha1sum vfit3.zip | grep -o "^\S*"';
+        [status, sha1] = system (cmd);
         sha1 = lower (strtrim (sha1));
-        sha1_obtained = true;
-    elseif ~ ispc
-        sha1_obtained = false;
-        warning (['Failed to run sha1sum, ' ...
-            'VFIT3 version could not be checked.']);
-    else
-        % Windows: try to get SHA1 using Get-FileHash
-        cmd = [ ...
-            'powershell -Command "Get-FileHash vfit3.zip ' ...
+        if (status == 0) && (length (sha1) == 40)
+            sha1_obtained = true;
+        else
+
+            % Try to get SHA1 using shasum
+            cmd = 'shasum vfit3.zip | grep -o "^\S*"';
+            [status, sha1] = system (cmd);
+            sha1 = lower (strtrim (sha1));
+            if (status == 0) && (length (sha1) == 40)
+                sha1_obtained = true;
+            else
+                sha1_obtained = false;
+                warning (['Failed to run sha1sum/shasum, ' ...
+                    'VFIT3 version could not be checked.']);
+            end
+        end
+
+    else % Windows: try to get SHA1 using Get-FileHash
+
+        cmd = ['powershell -Command "Get-FileHash vfit3.zip ' ...
             '-Algorithm SHA1 | Format-List -Property Hash"' ];
         [status, sha1] = system (cmd);
-        if status == 0
-            sha1 = regexprep (lower (strtrim (sha1)), 'hash\s*:\s*', '');
+        sha1 = regexprep (lower (strtrim (sha1)), 'hash\s*:\s*', '');
+        if (status == 0) && (length (sha1) == 40)
             sha1_obtained = true;
         else
             sha1_obtained = false;
