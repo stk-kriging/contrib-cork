@@ -83,9 +83,7 @@ The work of Niklas Georg was also supported by the Graduate School CE
 within the [Centre for Computational Engineering at Technische
 Universität Darmstadt](https://www.ce.tu-darmstadt.de/).
 
-We thank Christopher Blech, Harikrishnan Sreekumar and Sabine Langer
-for providing the implementation of the finite element solver used to
-compute the vibroacoustics data set.
+We thank Christopher Blech, Harikrishnan Sreekumar and Sabine Langer for suggesting acoutstic benchmarks and for providing the implementation of the finite element solver used to compute the vibroacoustics data set.
 
 ## Copyright & license
 
