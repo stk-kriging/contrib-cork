@@ -23,10 +23,11 @@ try
     [status, sha1] = system (cmd);
     if status == 0
         sha1 = lower (strtrim (sha1));
-        sha1_ok = true;        
+        sha1_obtained = true;
     elseif ~ ispc
-        sha1_ok = false;
-        sha1_err = 'Failed to run sha1sum';
+        sha1_obtained = false;
+        warning (['Failed to run sha1sum, ' ...
+            'VFIT3 version could not be checked.']);
     else
         % Windows: try to get SHA1 using Get-FileHash
         cmd = [ ...
@@ -35,10 +36,11 @@ try
         [status, sha1] = system (cmd);
         if status == 0
             sha1 = regexprep (lower (strtrim (sha1)), 'hash\s*:\s*', '');
-            sha1_ok = true;
+            sha1_obtained = true;
         else
-            sha1_ok = false;
-            sha1_err = 'Failed to run Get-FileHash';
+            sha1_obtained = false;
+            warning (['Failed to run Get-FileHash, ' ...
+                'VFIT3 version could not be checked.']);
         end
     end
 
@@ -48,12 +50,13 @@ catch e
     rethrow (e);
 end
 
-if ~ sha1_ok
+if ~ sha1_obtained
     vfit3_ver = '??? (vfit3.zip, failed version check, refer to vfit3.m)';
 elseif strcmp (sha1, '69cd6fd926fa076b4ade40e45613b72f8f66587f')
     vfit3_ver = '1.0 (vfit3.zip, 2008-08-08)';
 else
     vfit3_ver = '??? (vfit3.zip, unknown version, refer to vfit3.m)';
+    warning ('VFIT3 version unknown (not the expected SHA1).');
 end
 
 fid = fopen (fullfile (depend_dir, 'vfit3_version.txt'), 'w');
@@ -64,10 +67,5 @@ fprintf ('Extracting... ');
 unzip (dst_zip, dst_dir);
 
 fprintf ('OK\n');
-
-if ~ sha1_ok
-    warning (sprintf (['%s, VFIT3 version ' ...
-        'could not be checked.'], sha1_err)); %#ok<SPWRN> 
-end
 
 end % function
