@@ -24,8 +24,9 @@ This software should run with any reasonably recent version of Matlab.
 FIXME: Be more specific.  Make it work on Octave too.
 
 Start Matlab from the root of the project: the initialization script
-([`startup.m`](./startup.m)) will automatically download the
+([`startup.m`](./startup.m)) will automatically start, download the
 dependencies and then set the path.
+(If Matlab is already started, you can run `startup.m` manually.)
 
 Then have a look at the `script` directory, which contains all the
 scripts needed to reproduce the results of the article.
