@@ -75,7 +75,7 @@ Universität Darmstadt](https://www.ce.tu-darmstadt.de/).
 
 We thank Christopher Blech, Harikrishnan Sreekumar and Sabine Langer
 for providing the implementation of the finite element solver used to
-compute the vibroacoustics] data set.
+compute the vibroacoustics data set.
 
 ## Copyright & license
 
