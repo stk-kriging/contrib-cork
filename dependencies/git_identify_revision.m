@@ -9,6 +9,12 @@ if ~ exist (repo, 'dir')
     error (sprintf ('Directory not found: %s\n', repo)); %#ok<SPERR>
 end
 
+if ~ git_check_toplevel (repo)
+    fprintf (['Using %s revision ??? ' ...
+        '(not checked out using git?)\n'], name);
+    return
+end
+
 try
     cd (repo);
 
