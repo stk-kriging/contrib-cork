@@ -63,6 +63,20 @@ with occasional contributions by Julien Bect.
 The file [barylag.m](./utils/barylag.m) has been written by Greg von
 Winckel.
 
+## Acknowledgments
+
+The work of Niklas Georg and Ulrich Römer was funded by the [Deutsche
+Forschungsgemeinschaft](https://www.dfg.de/) (DFG, German Research
+Foundation) – RO4937/1-1.
+
+The work of Niklas Georg was also supported by the Graduate School CE
+within the [Centre for Computational Engineering at Technische
+Universität Darmstadt](https://www.ce.tu-darmstadt.de/).
+
+We thank Christopher Blech, Harikrishnan Sreekumar and Sabine Langer
+for providing the implementation of the finite element solver used to
+compute the vibroacoustics] data set.
+
 ## Copyright & license
 
 Copyright 2023 TU Braunschweig & CentraleSupélec

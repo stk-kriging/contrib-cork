@@ -5,7 +5,7 @@ For details on each of the different benchmarks functions, please refer to our a
 Frequency response function for the PAC-MAN benchmark example, introduced in [1]. For the calculation of the data set, we employed the Python implementation provided in the same paper with minor modifications, i.e., replacing the python module scipy by mpmath, in order to enable accurate computations of higher order Bessel functions (truncation order was set to 300). 
 
 ## data_VibroAcoustics.mat
-Frequency response function for an vibroacoustic model, taken from [2]. In particular, a 2D Mindlin plate is excited by a point force and strongly coupled to a 3D accoustic domain where the response at a point in the fluid is evaluated. We thank Christopher Blech and Sabine Langer for providing the implementation of the finite element solver used to compute the data set.
+Frequency response function for an vibroacoustic model, taken from [2]. In particular, a 2D Mindlin plate is excited by a point force and strongly coupled to a 3D accoustic domain where the response at a point in the fluid is evaluated. We thank Christopher Blech, Harikrishnan Sreekumar and Sabine Langer for providing the implementation of the finite element solver used to compute the data set.
 
 ## data_Spiral.mat
 Frequency response function for the reflection coefficient of a spiral antenna model. It is a demo example of CST Microwave Studio [3], where we employed the boundary element method solver to compute the data set.
