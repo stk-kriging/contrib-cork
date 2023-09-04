@@ -1,16 +1,14 @@
-function [Mean, Var, Var_real, Var_imag] = SepKrigingApprox(covfun, xi, yi, x_cv, poles, dim, lnv)
+function [Mean, Var, Var_real, Var_imag] = SepKrigingApprox(covfun, xi, yi, x_cv, poles, lnv)
 
-if nargin <5
+if nargin < 5
     poles = [];
 end
 
-if nargin <6
-    dim=1;
-end
-
-if nargin <7
+if nargin < 6
     lnv=-40;
 end
+
+dim = size (xi, 2);
 
 model = stk_model (covfun, dim);
 model.lognoisevariance = lnv;

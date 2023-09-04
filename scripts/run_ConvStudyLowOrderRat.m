@@ -34,7 +34,7 @@ methods={}; % Initialize
 
 opts = init_opts();
 opts.verbose=true;
-methods{end+1}.name = 'Szego'
+methods{end+1}.name = 'Szego';
 methods{end}.function = @(xi, yi, x_cv)  CplxGPapprox('Szego', xi, yi, x_cv, opts);
 methods{end}.style='x--';
 
@@ -44,9 +44,9 @@ methods{end}.function = @(xi, yi, x_cv)  CplxGPapprox('Szego0P', xi, yi, x_cv, o
 methods{end}.style='x--';
 
 methods{end+1}.name='Gauss(Sep)';
-methods{end}.function=@(xi,yi,x_cv) SepKrigingApprox('stk_gausscov_iso', xi, yi, x_cv, [], 1, -20)
+methods{end}.function=@(xi,yi,x_cv) SepKrigingApprox('stk_gausscov_iso', xi, yi, x_cv, [], -20);
 
 methods{end+1}.name='Chebyshev';
-methods{end}.function = @Polyapprox
+methods{end}.function = @Polyapprox;
 
-run_ConvStudy(methods, f, fun_name, Nz, recompute, discrete_data,  xmin, xmax, noise_std)
+run_ConvStudy(methods, f, fun_name, Nz, recompute, discrete_data,  xmin, xmax, noise_std);

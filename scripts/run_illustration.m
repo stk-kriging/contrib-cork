@@ -55,7 +55,7 @@ plot_cplxfun(x_cv, approxVF(x_cv), 'VectorFitting Approx', '--');
 [RMSE_VF, max_errorVF] = compute_approx_error(approxVF(x_cv), y_cv, 'VF');
 
 %% Separate Kriging Approximation
-Mean = SepKrigingApprox('stk_gausscov_iso', xi, yi, x_cv,  [], 1, -30);
+Mean = SepKrigingApprox('stk_gausscov_iso', xi, yi, x_cv,  [], -30);
 plot_cplxfun(x_cv, Mean, 'SepKriging Approx', '--');
 [RMSE_VF, max_errorVF] = compute_approx_error(Mean, y_cv, 'SepKriging');
 

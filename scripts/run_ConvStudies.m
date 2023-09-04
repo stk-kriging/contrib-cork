@@ -102,7 +102,7 @@ methods{end}.function = @(xi, yi, x_cv) AdapApprox('Szego', xi, yi, x_cv, opts, 
 methods{end}.style = 'mo-';
 
 methods{end+1}.name='Gauss(Sep)';
-methods{end}.function=@(xi,yi,x_cv) SepKrigingApprox('stk_gausscov_iso', xi, yi, x_cv,  [], 1, gauss_noise);
+methods{end}.function=@(xi,yi,x_cv) SepKrigingApprox('stk_gausscov_iso', xi, yi, x_cv, [], gauss_noise);
 methods{end}.style='o--';
 
 if discrete_data
