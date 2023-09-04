@@ -9,7 +9,9 @@ FORCE_RECOMPUTE = false;
 NOISE_STD = 0;
 
 % Select case study
-CASE_NUM = 1;
+if ~ exist ('CASE_NUM', 'var')
+    CASE_NUM = 1;
+end
 
 % Default scale parameters (used for illustration only)
 scale_x = 1;
@@ -20,7 +22,7 @@ scale_y = 1;
 n_cv = 201;
 
 
-%% Functions to approximate
+%% Test cases
 
 if CASE_NUM >= 6  % Common settings for the "parallel RLC circuits" case
     n_elements = 1000;
@@ -101,29 +103,33 @@ switch CASE_NUM
         nruns = 100;
 end
 
-methods = {}; % Initialize
-opts = init_opts();
-adap_opts = init_adap_opts();
-adap_opts.model_selection.retune = false;
 
-% Illustrate function
-% (for the 'circuit' case, see draw_illustration_Circuit.m)
+%% Illustrate function
+
 if ~ contains (fun_name, 'Circuit')
+    % (for the 'circuit' case, see draw_illustration_Circuit.m)
+
     [~, ~, x_cv, y_cv] = f(1);
     x_cv = scale_x * x_cv;
     y_cv = scale_y * y_cv;
     plot_cplxfun (x_cv, y_cv, 'Reference', 'k-')
+
     data = zeros (length (x_cv), 4);  header = {};
     data(:, 1) = x_cv;                header{1} = 'x';
     data(:, 2) = real (y_cv);         header{2} = 'y_ref_real';
     data(:, 3) = imag (y_cv);         header{3} = 'y_ref_imag';
     data(:, 4) = abs (y_cv);          header{4} = 'y_ref_abs';
-    filename = ['results/illustration_' fun_name '.csv'];
+    filename = fullfile ('results', ['illustration_' fun_name '.csv']);
     export_csv (filename, data, header);
 end
 
 
-%% Convergence study
+%% List of methods
+
+methods = {};
+opts = init_opts();
+adap_opts = init_adap_opts();
+adap_opts.model_selection.retune = false;
 
 methods{end+1}.name = 'AAA';
 methods{end}.function = @AAAapprox;
@@ -143,6 +149,9 @@ methods{end}.style = 'mo-';
 methods{end+1}.name = 'Gauss(Sep)';
 methods{end}.function = @(xi, yi, x_cv) SepKrigingApprox ('stk_gausscov_iso', xi, yi, x_cv, [], gauss_noise);
 methods{end}.style = 'o--';
+
+
+%% Run convergence study
 
 if discrete_data
     run_ConvStudy (methods, f, fun_name, Nz, FORCE_RECOMPUTE, discrete_data);
