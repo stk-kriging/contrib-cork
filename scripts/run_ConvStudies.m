@@ -11,53 +11,60 @@ NOISE_STD = 0;
 % Select case study
 CASE_NUM = 1;
 
+% Default scale parameters (used for illustration only)
+scale_x = 1;
+scale_y = 1;
+
 
 %% Functions to approximate
 
 switch CASE_NUM
     case 1
         f = @(ref_lev) fun_VibroAcoustics(ref_lev); Nz = 7:38; fun_name='VibroAcoustics'; discrete_data  =true;
-        scale_x = 1e3;    scale_y = 1e-7; gauss_noise = -30;
+        scale_x = 1e3;
+        scale_y = 1e-7;
+        gauss_noise = -30;
     case 2
         f = @(ref_lev) fun_Spiral(ref_lev); fun_name='Spiral'; Nz = 12:2:48; discrete_data  =true;
-        scale_x =1;    scale_y = 1; gauss_noise = -25;
+        gauss_noise = -25;
     case 3
         f = @(ref_lev) fun_WGjunctionS21(ref_lev); fun_name='WGjunctionS21'; Nz = 4:14; discrete_data  =true;
-        scale_x =1;    scale_y = 1; gauss_noise = -25;
+        gauss_noise = -25;
     case 4
         f = @(ref_lev) fun_WGjunctionS41(ref_lev); fun_name='WGjunctionS41'; Nz = 4:14; discrete_data  =true;
-        scale_x =1;    scale_y = 1; gauss_noise = -25;
+        gauss_noise = -25;
     case 5
         f = @(ref_lev) fun_pacmanRight(ref_lev); fun_name='PacmanRight'; Nz = 1:9; discrete_data  =true;
-        scale_x =1e3;    scale_y = 1; gauss_noise = -30;
+        scale_x = 1e3;
+        gauss_noise = -30;
     case 6
         dom_poles=true; n_elements=1000; n_cv=201; xmin=1; xmax=2.5;  nruns=1;
         f = @(omega) fun_Circuit(omega,n_elements, 1, 0.2, dom_poles);
         fun_name=['CircuitDomPoles'];
         discrete_data = false;
         Nz = 20:2:60;
-        scale_x =1e4;  scale_y = 1; gauss_noise = -20;
+        gauss_noise = -20;
     case 7
         dom_poles=false; n_elements=1000; n_cv=201; xmin=1; xmax=2.5;  nruns=1;
         f = @(omega) fun_Circuit(omega,n_elements, 1, 0.2, dom_poles);
         fun_name=['Circuit'];
         discrete_data = false;
         Nz = 20:2:60;
-        scale_x =1e4;    scale_y = 1; gauss_noise = -20;
+        gauss_noise = -20;
     case 8
         dom_poles=true; n_elements=1000; n_cv=201; xmin=1; xmax=2.5; nruns=100;
         f = @(omega, seed) fun_Circuit(omega,n_elements, seed, 0.2, dom_poles);
         fun_name=['CircuitDomPoles100runs'];
         discrete_data = false;
         Nz = 20:2:60;
-        scale_x =1e4;    scale_y = 1; gauss_noise = -20;
+        gauss_noise = -20;
     case 9
         dom_poles=false; n_elements=1000; n_cv=201; xmin=1; xmax=2.5; nruns=100;
         f = @(omega, seed) fun_Circuit(omega,n_elements, seed, 0.2, dom_poles);
         fun_name=['Circuit100runs'];
         discrete_data = false;
         Nz = 20:2:60;
-        scale_x =1e4;    scale_y = 1; gauss_noise = -20;
+        gauss_noise = -20;
 end
 
 methods={}; % Initialize
