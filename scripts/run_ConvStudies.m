@@ -98,13 +98,11 @@ methods{end+1}.name = 'VF';
 methods{end}.function = @VFapprox;
 
 methods{end+1}.name = 'Szego';
-opts = init_opts();
 methods{end}.function = @(xi, yi, x_cv) CplxGPapprox('Szego', xi, yi, x_cv, opts);
 methods{end}.style = 'gx--';
 
 methods{end+1}.name='Adap'
 adap_opts = init_adap_opts();
-opts = init_opts();
 methods{end}.function = @(xi, yi, x_cv) AdapApprox('Szego', xi, yi, x_cv, opts, adap_opts);
 methods{end}.style = 'mo-';
 
