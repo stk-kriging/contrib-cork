@@ -87,17 +87,23 @@ else %max_num_poles>0
 
         % Candidate pole for removing based on likelihood (model with same
         % number of poles -> should be fine); using fixed hyper-parameters
-        critz = zeros(size(poles));
-        opts.params = params;
-        opts.tune_poles=false;
-        for i = 1:length(poles)
-            opts.poles = poles(setdiff(1:end,i));
-            [~,~,~,~, critz(i), ~] = CplxGPapprox(cov_model, xi, yi, x_cv,opts);
+        K = length (poles);
+        if K > 1
+            critz = zeros(size(poles));
+            opts.params = params;
+            opts.tune_poles=false;
+            for i = 1:K
+                opts.poles = poles(setdiff(1:K,i));
+                [~, ~, ~, ~, critz(i), ~] = CplxGPapprox...
+                    (cov_model, xi, yi, x_cv,opts);
+            end
+            [~, idx] = min (critz);
+            poles = poles(setdiff (1:K, idx));
+        else
+            poles = [];
         end
-        [~, idx] = min(critz);
 
         % Tune reduced Model
-        poles = poles(setdiff(1:end,idx));
         opts.poles = poles;
 
         if adap_opts.fast
