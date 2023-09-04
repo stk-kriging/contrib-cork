@@ -5,9 +5,9 @@ clf; close all; clear;
 for dom_poles = [false, true]
     n_elements=1000;
     n_cv=201;
-    xmin=1; xmax=2.5; 
+    xmin=1; xmax=2.5;
     f = @(omega) fun_Circuit(omega,n_elements, 1, 0.2, dom_poles);
-    fun_name=['Circuit']; 
+    fun_name=['Circuit'];
     if dom_poles
         fun_name = [fun_name 'DomPoles'];
     end

@@ -11,7 +11,7 @@ end
 assert(isempty(opts.poles));
 
 % Restrict the maximum number of poles in any case to (n_points-1)/2
-max_num_poles = min(floor((length(xi)-1)/2), adap_opts.pole_init_method.max_poles); 
+max_num_poles = min(floor((length(xi)-1)/2), adap_opts.pole_init_method.max_poles);
 max_dist = inf; % Maximum distance of initial poles. %max(xi)-min(xi)
 
 if ~iscell(adap_opts.pole_init_method.name)
@@ -26,26 +26,26 @@ if max_num_poles ==0
     opts.poles = [];
     [data{1}.Mean, data{1}.Var, data{1}.Var_real, data{1}.Var_imag, data{1}.crit, data{1}.model] = CplxGPapprox(cov_model, xi, yi, x_cv,opts);
     opt_idx = 1;
-    data{1}.loo_res=loo_res(xi, yi, data{1}.model, adap_opts.model_selection.retune, opts.use_frf_props, adap_opts.model_selection.stability_selection); 
+    data{1}.loo_res=loo_res(xi, yi, data{1}.model, adap_opts.model_selection.retune, opts.use_frf_props, adap_opts.model_selection.stability_selection);
 else %max_num_poles>0
-    
+
     %% Determine initial starting poles (max_num_poles) and tune it
     %% (choose best initial model based on likelihood)
     for i = 1:length(adap_opts.pole_init_method.name)
 
         switch adap_opts.pole_init_method.name{i}
             case 'VF'
-                  [~, init_poles] = VectorFitting(xi,yi, adap_opts.pole_init_method.VF.Npoles);
-                  init_poles = -1i*transpose(init_poles);
-                  init_poles = init_poles(real(init_poles)>=0);
-                  %% temporary solution (remove imaginary poles)
-                  init_poles = init_poles([real(init_poles)~=0]);
-                  init_poles=order_poles(init_poles, min(xi), max(xi), max_dist, max_num_poles);
-             case 'equi'
-                  h=(max(xi)-min(xi))/max_num_poles;
-                  init_poles = transpose(min(xi)+[0.5:max_num_poles-0.5]*h+1i*adap_opts.pole_init_method.equi.real_part*(max(xi)-min(xi)));
+                [~, init_poles] = VectorFitting(xi,yi, adap_opts.pole_init_method.VF.Npoles);
+                init_poles = -1i*transpose(init_poles);
+                init_poles = init_poles(real(init_poles)>=0);
+                %% temporary solution (remove imaginary poles)
+                init_poles = init_poles([real(init_poles)~=0]);
+                init_poles=order_poles(init_poles, min(xi), max(xi), max_dist, max_num_poles);
+            case 'equi'
+                h=(max(xi)-min(xi))/max_num_poles;
+                init_poles = transpose(min(xi)+[0.5:max_num_poles-0.5]*h+1i*adap_opts.pole_init_method.equi.real_part*(max(xi)-min(xi)));
         end
-        
+
         % Note that AAA and VF can potentially give less than max_num_poles starting poles
         n=length(init_poles);
         assert(n>0);
@@ -53,14 +53,14 @@ else %max_num_poles>0
         %% Model with all poles
         opts.poles = init_poles;
         opts.tune_poles = true;
-        
+
         if i ==1
-             data = cell(n+1,1);
-             [data{n+1}.Mean, data{n+1}.Var, data{n+1}.Var_real, data{n+1}.Var_imag, data{n+1}.crit, data{n+1}.model] = CplxGPapprox(cov_model, xi, yi, x_cv,opts);
-             if adap_opts.verbose
-                 fprintf('Approximation with initial poles of %s approach computed.  \n', adap_opts.pole_init_method.name{i})
-             end
-             crit_opt = data{n+1}.crit;
+            data = cell(n+1,1);
+            [data{n+1}.Mean, data{n+1}.Var, data{n+1}.Var_real, data{n+1}.Var_imag, data{n+1}.crit, data{n+1}.model] = CplxGPapprox(cov_model, xi, yi, x_cv,opts);
+            if adap_opts.verbose
+                fprintf('Approximation with initial poles of %s approach computed.  \n', adap_opts.pole_init_method.name{i})
+            end
+            crit_opt = data{n+1}.crit;
         else
             [Mean,Var, Var_real, Var_imag, crit, model] = CplxGPapprox(cov_model, xi, yi, x_cv,opts);
             if crit <crit_opt
@@ -72,13 +72,13 @@ else %max_num_poles>0
                 data{n+1}.Mean = Mean;
                 data{n+1}.Var = Var;
                 data{n+1}.Var_real = Var_real;
-                data{n+1}.Var_imag = Var_imag;           
+                data{n+1}.Var_imag = Var_imag;
                 data{n+1}.crit = crit;
                 data{n+1}.model = model;
             end
         end
     end
-    
+
     %% Start with poles and parameters of high-dim model
     poles = get_lm_poles(data{n+1}.model.lm);
     params = data{n+1}.model.param;
@@ -87,7 +87,7 @@ else %max_num_poles>0
 
         % Candidate pole for removing based on likelihood (model with same
         % number of poles -> should be fine); using fixed hyper-parameters
-        critz = zeros(size(poles)); 
+        critz = zeros(size(poles));
         opts.params = params;
         opts.tune_poles=false;
         for i = 1:length(poles)
@@ -96,7 +96,7 @@ else %max_num_poles>0
         end
         [~, idx] = min(critz);
 
-        % Tune reduced Model 
+        % Tune reduced Model
         poles = poles(setdiff(1:end,idx));
         opts.poles = poles;
 
@@ -104,9 +104,9 @@ else %max_num_poles>0
             opts.p0=opts.params;
             opts.n_restart=0;
         end
-        
+
         opts.tune_poles = ~isempty(poles);
-        opts.params=[];    
+        opts.params=[];
         [data{n}.Mean, data{n}.Var, data{n}.Var_real, data{n}.Var_imag, data{n}.crit, data{n}.model] = CplxGPapprox(cov_model, xi, yi, x_cv,opts);
         if ~isempty(poles)
             poles = get_lm_poles(data{n}.model.lm);
@@ -118,13 +118,13 @@ else %max_num_poles>0
         params=data{n}.model.param;
         n=n-1;
     end
-    
-    
+
+
     %% Model selection
-    
-    
+
+
     if adap_opts.max_poles+1<length(data)
-        % It's possible to starting with a larger number of poles than desired 
+        % It's possible to starting with a larger number of poles than desired
         % for the approximation; in order to ensure a space-filling
         % distribution of starting poles
         data = data(1:adap_opts.max_poles+1);
@@ -153,10 +153,10 @@ else %max_num_poles>0
             fprintf('Mixed error indicator (%i poles): %.2f. Loo: %.2f. Penalty: %.2f\n',i-1, Epsz(i), eps1, eps2)
         end
     end
-    
-    
+
+
     if adap_opts.verbose
-         Epsz
+        Epsz
     end
     if adap_opts.model_selection.exclude_white_noise
         flag = true;
@@ -175,7 +175,7 @@ else %max_num_poles>0
             end
         end
     else
-           [~,opt_idx] = min(Epsz);
+        [~,opt_idx] = min(Epsz);
     end
 
     if adap_opts.verbose
@@ -198,7 +198,7 @@ for i = 1:length(data)-1
         warning('Something went wrong during the adaptive procedure. Adding poles does not improve the likelihood');
     end
 end
-   
+
 
 
 end

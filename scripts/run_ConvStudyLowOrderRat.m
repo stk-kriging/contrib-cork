@@ -50,4 +50,3 @@ methods{end+1}.name='Chebyshev';
 methods{end}.function = @Polyapprox
 
 run_ConvStudy(methods, f, fun_name, Nz, recompute, discrete_data,  xmin, xmax, noise_std)
-   

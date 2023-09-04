@@ -48,7 +48,3 @@ function C = goal_fun(sigma2,model, xi, zi)
     model.param =sigma2;
     C=stk_param_proflik(model, xi, zi);
 end
-
-
-
-

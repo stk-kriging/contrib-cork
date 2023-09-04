@@ -21,7 +21,7 @@ end
 if isempty(pole_bounds)
     pole_bounds = [-inf*ones(2*length(poles),1), inf*ones(2*length(poles),1)];
 else
-     assert(all(pole_bounds(:,1) <= pole_bounds(:,2)));
+    assert(all(pole_bounds(:,1) <= pole_bounds(:,2)));
 end
 
 lm = struct (                    ...
@@ -33,7 +33,7 @@ lm = struct (                    ...
     'tune_poles',         tune_poles, ...
     'use_frf_props',      use_frf_props, ...
     'use_zero_mean',      use_zero_mean);
-    
+
 
 lm = class (lm, 'stk_lm_rat', stk_lm_ ());
 

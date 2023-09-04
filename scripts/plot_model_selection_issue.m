@@ -2,8 +2,8 @@
 clf; close all; clear;
 
 %% Function to approximate (either function or training+test-data)
-f = @(ref_level) fun_VibroAcoustics(ref_level); fun='VibroAcoustics'; 
-    
+f = @(ref_level) fun_VibroAcoustics(ref_level); fun='VibroAcoustics';
+
 %% Training and test points;
 ref_level=18; % (Refinement level for training points)
 [xi, yi, x_cv, y_cv] = f(ref_level);
@@ -21,7 +21,7 @@ data_cv(:,10) = x_cv*1e3; header_cv{10} = 'x';
 data_cv(:,1) = 1e-7*real(y_cv); header_cv{1} = 'ref_real';
 data_cv(:,2) = 1e-7*imag(y_cv); header_cv{2} = 'ref_imag';
 data_cv(:,3) = abs(1e7*y_cv);  header_cv{3} = 'ref_abs';
-    
+
 %% Illustrate function:
 plot_cplxfun(x_cv,y_cv, 'Reference', 'k-')
 plot_cplxfun(xi, yi, 'Data for Fitting', 'kx')
@@ -42,7 +42,7 @@ plot_cplxfun(x_cv, Mean, 'Adap Approx', '--');
 [RMSE_Adap, max_errorAdap] = compute_approx_error(Mean, y_cv, 'Adap');
 
 
-  
+
 %% Adaptive Approximation Loo
 adap_opts = init_adap_opts();
 adap_opts.verbose=true;
@@ -52,7 +52,7 @@ adap_opts.model_selection.lambdaz = [1 0]; adap_opts.model_selection.normalize=0
 plot_cplxfun(x_cv, Mean, 'Adap Approx', '--');
 [RMSE_Adap, max_errorAdap] = compute_approx_error(Mean, y_cv, 'Adap');
 
-  
+
 
 [eps, res2, res2Loo, res2Penalty, loo_plot_data] = loo_res(xi,yi,adap_model_loo, true, true,[1,0.2], 0, 1);
 figure(3);
@@ -73,12 +73,12 @@ title('Abs')
 hold on;
 drawnow;
 for i = 1:length(loo_plot_data.predz)
-   subplot(1,3,1)
-   plot(loo_plot_data.x_cv, real(loo_plot_data.predz{i}), '--',  'DisplayName', ['LooModel - ' num2str(i)])
-   subplot(1,3,2)
-   plot(loo_plot_data.x_cv, imag(loo_plot_data.predz{i}), '--', 'DisplayName', ['LooModel - ' num2str(i)]);
-   subplot(1,3,3)
-   plot(loo_plot_data.x_cv, abs(loo_plot_data.predz{i}), '--', 'DisplayName', ['LooModel - ' num2str(i)]);
+    subplot(1,3,1)
+    plot(loo_plot_data.x_cv, real(loo_plot_data.predz{i}), '--',  'DisplayName', ['LooModel - ' num2str(i)])
+    subplot(1,3,2)
+    plot(loo_plot_data.x_cv, imag(loo_plot_data.predz{i}), '--', 'DisplayName', ['LooModel - ' num2str(i)]);
+    subplot(1,3,3)
+    plot(loo_plot_data.x_cv, abs(loo_plot_data.predz{i}), '--', 'DisplayName', ['LooModel - ' num2str(i)]);
 end
 
 for i = 1:length(data)

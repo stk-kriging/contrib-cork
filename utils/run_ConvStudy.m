@@ -5,9 +5,12 @@ if discrete_data && nargin <8
     xmax=NaN;
     noise_std=0;
 end
+
 if nargin <10
+
     n_cv = 201;
 end
+
 if nargin <11
     nruns=1;
 end
@@ -60,24 +63,21 @@ for i = 1:length(methods)
     drawnow;
     if nruns>1
         figure(3)
-            semilogy(Nsz, errorsRMSE_Median, ls, 'DisplayName', methods{i}.name)
-            hold on;
-            title(fun_name)
-            xlabel('Number of training points')
-            ylabel('RMSE - Median')
-            legend;
-            figure(4)
-            semilogy(Nsz, errorsMax_Median, ls, 'DisplayName', methods{i}.name)
-            hold on;
-            title(fun_name)
-            xlabel('Number of training points')
-            ylabel('Maximum error - Median')
-            legend;
-            drawnow;
+        semilogy(Nsz, errorsRMSE_Median, ls, 'DisplayName', methods{i}.name)
+        hold on;
+        title(fun_name)
+        xlabel('Number of training points')
+        ylabel('RMSE - Median')
+        legend;
+        figure(4)
+        semilogy(Nsz, errorsMax_Median, ls, 'DisplayName', methods{i}.name)
+        hold on;
+        title(fun_name)
+        xlabel('Number of training points')
+        ylabel('Maximum error - Median')
+        legend;
+        drawnow;
     end
 end
 
-
-
 end
-

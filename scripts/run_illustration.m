@@ -12,7 +12,7 @@ if ~discrete_data
     n_training_points = 40;
     noise_std=0.0;
 
-    xi = linspace(xmin,xmax,n_training_points)'; 
+    xi = linspace(xmin,xmax,n_training_points)';
     yi = f(xi);
     rng(23)
     lnv=2*log(noise_std);
@@ -27,7 +27,7 @@ if ~discrete_data
 
 
 else
-    
+
     %% Training and test points;
     ref_level=18; % (Refinement level for training points)
     [xi, yi, x_cv, y_cv] = f(ref_level);
@@ -37,7 +37,7 @@ else
     [x_cv,idx] = unique(x_cv);
     y_cv = y_cv(idx);
     n_training_points = length(xi);
-    
+
 end
 
 %% Illustrate function:
@@ -64,10 +64,10 @@ opts=init_opts();
 [Mean, Var, Var_real, Var_imag, crit_opt, model] = CplxGPapprox('Szego', xi, yi, x_cv, opts);%, [-5; -1], [5;5]);%,[],[],[],0,[1, 1e-3]);
 plot_cplxfun(x_cv, Mean, ['Szego'], 'b:');
 [RMSE_Szego, max_errorSzego] = compute_approx_error(Mean, y_cv, 'Szego');
- 
+
 %% Adaptive Approximation
 adap_opts = init_adap_opts();
-%opts.verbose=true; 
+%opts.verbose=true;
 adap_opts.verbose=true;
 opts.n_restart=5;
 %adap_opts.model_selection.lambdaz = [1 0]; adap_opts.model_selection.normalize=0; % Set LOO
