@@ -7,7 +7,6 @@ if discrete_data && nargin <8
 end
 
 if nargin <10
-
     n_cv = 201;
 end
 
