@@ -30,8 +30,8 @@ end
 % Download STK if needed (lm-param branch from Niklas' fork)
 if ~ exist (stk_dir, 'dir')
     git_clone_dependency ('stk', ...
-        'https://github.com/n-georg/stk.git', ...
-        '7431a607b4e6ec5f8a51a4a166d9b79be9e23ebc');
+        'https://github.com/jbect/stk.git', ...
+        '7787b58580d0bafa2589e1f0a9cf9394ee66b48d');
 end
 
 % Download VFIT3 if needed
