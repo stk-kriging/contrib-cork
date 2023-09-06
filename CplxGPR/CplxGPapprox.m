@@ -26,7 +26,9 @@ if isempty(opts.p0) && contains(cov_model, 'Szego')
 end
 
 if contains(cov_model, 'Szego') && isfield(opts, 'SzegoPrior')
-    model.prior = setSzegoPrior(opts.SzegoPrior(1)*(max(xi)-min(xi)), opts.SzegoPrior(2));
+    mode = opts.SzegoPrior(1) * (max(xi) - min(xi));
+    sigma = opts.SzegoPrior(2);
+    model.prior = szego_param_prior (mode, sigma);
 end
 
 %% Set linear model
