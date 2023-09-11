@@ -129,7 +129,6 @@ end
 methods = {};
 opts = init_opts();
 adap_opts = init_adap_opts();
-adap_opts.model_selection.retune = false;
 
 methods{end+1}.name = 'AAA';
 methods{end}.function = @AAAapprox;
@@ -142,7 +141,6 @@ methods{end}.function = @(xi, yi, x_cv) CplxGPapprox ('Szego', xi, yi, x_cv, opt
 methods{end}.style = 'gx--';
 
 methods{end+1}.name = 'Adap';
-adap_opts = init_adap_opts();
 methods{end}.function = @(xi, yi, x_cv) AdapApprox ('Szego', xi, yi, x_cv, opts, adap_opts);
 methods{end}.style = 'mo-';
 
