@@ -9,7 +9,7 @@ __Rational kernel-based interpolation for complex-valued frequency response func
 [arXiv:2307.13484](https://arxiv.org/abs/2307.13484)
 
 ‡ [Laboratoire des signaux et systèmes](https://l2s.centralesupelec.fr/),
-CentraleSupélec, Univ. Paris-Sud, CNRS, Université Paris-Saclay, Paris, France
+Université Paris-Saclay, CNRS, CentraleSupélec, Gif-sur-Yvette, France.
 
 † [Institut für Dynamik und Schwingungen](https://www.tu-braunschweig.de/ids),
 Technische Universität Braunschweig, Braunschweig, Germany
