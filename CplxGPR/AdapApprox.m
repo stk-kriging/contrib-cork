@@ -81,7 +81,7 @@ else %max_num_poles>0
 
     %% Start with poles and parameters of high-dim model
     poles = get_lm_poles(data{n+1}.model.lm);
-    params = data{n+1}.model.param;
+    cov_param = data{n+1}.model.param;
 
     while ~isempty(poles)
 
@@ -90,7 +90,7 @@ else %max_num_poles>0
         K = length (poles);
         if K > 1
             critz = zeros(size(poles));
-            opts.params = params;
+            opts.params = stk_get_optimizable_parameters (cov_param);
             opts.tune_poles=false;
             for i = 1:K
                 opts.poles = poles(setdiff(1:K,i));
@@ -121,7 +121,7 @@ else %max_num_poles>0
             fprintf('Removed a pole. New linear model reads:')
             disp(data{n}.model.lm);
         end
-        params=data{n}.model.param;
+        cov_param = data{n}.model.param;
         n=n-1;
     end
 
@@ -168,7 +168,14 @@ else %max_num_poles>0
         flag = true;
         while flag
             [~,opt_idx] = min(Epsz);
-            if proflik_whitenoise(data{opt_idx}.model, xi, yi, false, false)<data{opt_idx}.crit
+
+            % Compute the profile NLL for a model with the same poles
+            % but with a white noise kernel instead
+            crit_white_noise = proflik_whitenoise ...
+                (data{opt_idx}.model, xi, yi, false, false);
+
+            % Exclude the current model if it is worse
+            if crit_white_noise < data{opt_idx}.crit
                 Epsz(opt_idx)=Inf;
                 warning('Excluded model with %i poles (white noise kernel)\n', opt_idx-1)
                 if all(Epsz==Inf)
@@ -204,8 +211,6 @@ for i = 1:length(data)-1
         warning('Something went wrong during the adaptive procedure. Adding poles does not improve the likelihood');
     end
 end
-
-
 
 end
 

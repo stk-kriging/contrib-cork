@@ -13,32 +13,23 @@ if opts.tune_poles && isempty(opts.p0) && opts.tune_kernel_first
     opts2.n_restart=floor(opts2.n_restart/2);
     model = tune_model(model, xi_cplx, yi_cplx, opts2);
     model.lm = lm_rat;
-    opts.p0=model.param;
+    opts.p0 = stk_get_optimizable_parameters (model.param);
 end
 
-% If no initial kernel hyper-parameters are given:
-% use default values for all parameters except for the scaling sigma2
-% which is then obtained by stk_param_gls
-if isempty(opts.p0)
-    global CplxCov
-    if CplxCov.rescaling(1)=='e'
-        model.param(1)=0;
-    elseif CplxCov.rescaling(1)=='n'
-        model.param(1)=1;
-    else
-        error;
-    end
+% If no initial kernel hyper-parameters are given: use default values for
+% all parameters, except for the sigma2, which is obtained by profiling
+if isempty (opts.p0)
+
+    % Set sigma^2 to 1 before calling stk_param_init? Why?
+    % FIXME: Temporarily commented out. Investigate / explain...
+    % model.param.sigma2 = 1;
+
     opts.p0 = stk_param_init (model, xi_cplx, yi_cplx);
-    model.param=opts.p0;
-    [beta,sigma2]= stk_param_gls(model, xi_cplx, yi_cplx);
-    sigma2 = (n-length(beta))/n*sigma2;
-    if CplxCov.rescaling(1)=='e'
-        opts.p0(1)=log(sigma2);
-    elseif CplxCov.rescaling(1)=='n'
-        opts.p0(1)=sigma2;
-    else
-        error;
-    end
+    model.param = stk_set_optimizable_parameters (model.param, opts.p0);
+
+    % Compute profiled sigma^2
+    model.param.sigma2 = compute_profiled_sigma2 (model, xi_cplx, yi_cplx);
+
 end
 
 try
@@ -55,29 +46,19 @@ model_opt = model_init;
 
 if opts.n_restart
     orig_warning_state = warning('off', 'STK:stk_param_estim_optim:NoImprovement');
-    global CplxCov;
     rng(23)
     for i = 1:opts.n_restart
-        p0 = CplxCov.get_random_p0();
-        model.param=p0;
-        if CplxCov.rescaling(1)=='e'
-            model.param(1)=0;
-        elseif CplxCov.rescaling(1)=='n'
-            model.param(1)=1;
-        else
-            error;
-        end
-        [beta,sigma2]= stk_param_gls(model, xi_cplx, yi_cplx);
-        sigma2 = (n-length(beta))/n*sigma2;
-        if CplxCov.rescaling(1)=='e'
-            p0(1)=log(sigma2); %TODO: FIX ME only if exponential rescaling; and multiply with initial...
-        elseif CplxCov.rescaling(1)=='n'
-            p0(1)=sigma2;
-        else
-            error;
-        end
+
+        % Draw random parameters
+        model.param = set_random_param (model.param);
+        p0 = stk_get_optimizable_parameters (model.param);
+
+        % Compute profiled sigma^2
+        model.param.sigma2 = compute_profiled_sigma2 (model, xi_cplx, yi_cplx);
+
         try
-            [model_new, info] = stk_param_estim_(model, xi_cplx, yi_cplx, p0, [], @stk_param_proflik);
+            [model_new, info] = stk_param_estim_ (model, ...
+                xi_cplx, yi_cplx, p0, [], @stk_param_proflik);
             if info.crit_opt <crit_opt
                 crit_opt = info.crit_opt;
                 model_opt = model_new;

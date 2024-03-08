@@ -22,7 +22,7 @@ if nargin<8
     penaltynorm=1;
 end
 
-p0 = model.param;
+p0 = stk_get_optimizable_parameters (model.param);
 model_init = model;
 
 %[lb, ub] = stk_param_getdefaultbounds (model, xi, yi);
@@ -46,7 +46,7 @@ if n_multistart
         opts.tune_poles=true;
         opts.poles = get_lm_poles(model.lm);
     else
-        error;
+        error ();
     end
 end
 
