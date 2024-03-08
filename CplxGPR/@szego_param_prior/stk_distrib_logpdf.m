@@ -1,9 +1,5 @@
 function logpdf = stk_distrib_logpdf (distrib, z)
 
-% FIXME: Get rid of this global variable
-global CplxCov;
-assert (CplxCov.n_param == 2 && CplxCov.sampling(2) == 'n')
-
 assert (length (z) == 2);
 
 la = log (z(2));  % log (alpha)
