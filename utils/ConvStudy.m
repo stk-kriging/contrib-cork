@@ -12,18 +12,16 @@ function [errorsRMSE, errorsMax, Nsz, errorsRMSE_Median, errorsMax_Median] = Con
         Nruns=1;
     end
 
-      
     Nsz=zeros(size(Nz));
     errorsRMSE = zeros(length(Nz),Nruns);
     errorsMax = zeros(length(Nz), Nruns);
-    if contains(name, 'Adap')
+    if strcmp (name, 'Adap')
         errorsRMSEfull = NaN(length(Nz), Nruns, 15);
         errorsMaxfull = NaN(length(Nz), Nruns,15);
     end
-    
-   
+
     for j = 1:Nruns
-        
+
     %% Test points
     if ~discrete
         x_cv = linspace(xmin,xmax,n_cv)';
@@ -35,9 +33,7 @@ function [errorsRMSE, errorsMax, Nsz, errorsRMSE_Median, errorsMax_Median] = Con
     else
         [~,~, x_cv, y_cv] = f(1);
     end
-    
 
-    
     %% Convergence Study
     for i=1:length(Nz)
         tic;
@@ -58,12 +54,12 @@ function [errorsRMSE, errorsMax, Nsz, errorsRMSE_Median, errorsMax_Median] = Con
         end
         Nsz(i)=length(xi);
        % try
-            if contains(name, 'Adap')
+            if strcmp (name, 'Adap')
                 [Approx, ~, ~, ~, ~, ~, ~, data,~] = method(xi, yi, x_cv);
                 for k = 1:length(data)
                     [errorsRMSEfull(i,j,k), errorsMaxfull(i,j,k)] = compute_approx_error(data{k}.Mean, y_cv);
                 end
-            elseif contains(name, 'Cheb')
+            elseif strcmp(name, 'Chebyshev')
                 xc = cos((2*(1:Nz(i))-1)/2/Nz(i)*pi)'; % Chebyshev nodes
                 xc = (xmax-xmin)/2*xc+(xmax+xmin)/2; % Scale and shift
                 if Nruns ==1
@@ -71,21 +67,20 @@ function [errorsRMSE, errorsMax, Nsz, errorsRMSE_Median, errorsMax_Median] = Con
                 else
                     yc = f(xc, j);
                 end
-                Approx=method(xc, yc, x_cv); 
+                Approx=method(xc, yc, x_cv);
             else
                 Approx = method(xi, yi, x_cv);
             end
      %   catch
      %       Approx = method(xi, yi, x_cv,j); %% Very, very ugly workaround for fully adaptive approximation
       %  end
-                
+
         [errorsRMSE(i,j), errorsMax(i,j)] = compute_approx_error(Approx, y_cv, name);
 
         fprintf('Approximation: %s. Run %i of %i. Repetition %i of %i. Evaluation took %f s.\n', name, i, length(Nz),j, Nruns, toc);
     end
     end
-    
-        
+
     if nargout>3
          errorsRMSE_Median = median(errorsRMSE,2);
          errorsMax_Median = median(errorsMax,2);
@@ -93,7 +88,7 @@ function [errorsRMSE, errorsMax, Nsz, errorsRMSE_Median, errorsMax_Median] = Con
 
     %% Store results
     save(['results/' name '.mat'], 'errorsRMSE', 'errorsMax', 'Nsz');
-    if contains(name, 'Adap')
+    if strcmp(name, 'Adap')
         save(['results/' name 'Full.mat'], 'errorsRMSE', 'errorsMax', 'Nsz', 'errorsRMSEfull', 'errorsMaxfull');
     end
 
@@ -105,7 +100,5 @@ function [errorsRMSE, errorsMax, Nsz, errorsRMSE_Median, errorsMax_Median] = Con
     data(:,3) = errorsMax;
     header = 'N, RMSE, Max';
     export_csv(['results/' name '.csv'], data, header);
-    
-    
-    
+
 end
