@@ -106,9 +106,8 @@ end
 
 %% Illustrate function
 
-if ~ contains (fun_name, 'Circuit')
+if isempty (strfind (fun_name, 'Circuit')) %#ok<STREMP>
     % (for the 'circuit' case, see draw_illustration_Circuit.m)
-
     [~, ~, x_cv, y_cv] = f(1);
     x_cv = scale_x * x_cv;
     y_cv = scale_y * y_cv;

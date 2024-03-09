@@ -12,20 +12,21 @@ model.lognoisevariance=opts.lnv;
 if ~isempty(opts.lb) && ~isempty(opts.ub)
     CplxCov=CplxCov.set_bounds(opts.lb, opts.ub)
 else
-    if contains(cov_model, 'Szego')
+    if strcmp (cov_model, 'Szego')
         [lb,ub] = CplxCov.get_bounds();
         lb(2) = lb(2)*(max(xi)-min(xi));
         ub(2) =    ub(2)*(max(xi)-min(xi));
         CplxCov=CplxCov.set_bounds(lb, ub);
     end
 end
-if isempty(opts.p0) && contains(cov_model, 'Szego')
+
+if isempty (opts.p0) && strcmp (cov_model, 'Szego')
     [param0, lnv]  = CplxCov.get_params_init();
     param0(2) = param0(2)*(max(xi)-min(xi)); % rescale w.r.t. size of interval
     CplxCov = CplxCov.set_params_init(param0, lnv);
 end
 
-if contains(cov_model, 'Szego') && isfield(opts, 'SzegoPrior')
+if strcmp (cov_model, 'Szego') && isfield (opts, 'SzegoPrior')
     mode = opts.SzegoPrior(1) * (max(xi) - min(xi));
     sigma = opts.SzegoPrior(2);
     model.prior = szego_param_prior (mode, sigma);
