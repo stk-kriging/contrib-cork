@@ -1,5 +1,10 @@
-function [res] = fun_LowOrderRational(omega)
+function [res] = fun_LowOrderRational(omega, a)
 
-res= 1./(1j*omega+0.1)+.5./(1j*omega-(-0.1-0.5i))+.5./(1j*omega-(-0.1+0.5i));
+if nargin < 2
+  a = 0.1;
+end
+
+
+res= 1./(1j*omega+a)+.5./(1j*omega-(-a-0.5i))+.5./(1j*omega-(-a+0.5i));
 
 end
