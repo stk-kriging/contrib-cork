@@ -4,3 +4,4 @@ run_ConvStudyLowOrderRat;
 draw_illustration_Circuit;
 run_ErrorIndicatorStudy;
 run_ConvStudies;
+alpha_investigation;
