@@ -6,7 +6,7 @@ function [Mean, Var, Var_real, Var_imag, crit_opt, model] = CplxGPapprox(cov_mod
 
 %% Create model
 global CplxCov;
-CplxCov = set_cplx_Cov(cov_model);
+CplxCov = make_ComplexCov (cov_model);
 model = stk_model('stk_complexcov', 2);
 model.lognoisevariance=opts.lnv;
 if ~isempty(opts.lb) && ~isempty(opts.ub)
