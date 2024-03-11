@@ -10,7 +10,7 @@ end
 [xi, zi] = mapCplxData (xi, zi, false);
 
 % Replace the original kernel with a white noise kernel
-model.param = set_cplx_Cov ('WhiteNoise');
+model.param = make_ComplexCovw ('WhiteNoise');
 
 % Estimate beta using the GLS method
 [beta, sigma2gls] = stk_param_gls (model, xi, zi);
