@@ -5,6 +5,9 @@ dependencies/vfit3/
 dependencies/vfit3.zip
 dependencies/vfit3_version.txt
 
+# Octave-specific
+octave-workspace
+
 # autosave
 *.asv
 *.m~
