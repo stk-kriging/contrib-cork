@@ -1,5 +1,8 @@
+% make_ComplexCov is a wrapper around the constructor of ComplexCov
+%
 % Append '0P' for not including the "FRF" Pcov function
-function CplxCov = set_cplx_Cov(model)
+
+function CplxCov = make_ComplexCov (model)
 
 if all(model(end-1:end)=='0P')
     model = model(1:end-2);
@@ -101,8 +104,6 @@ if zeroPCov
         dPCov{i} = @(x,y,params) (zeros(size(Cov(x,y,params))));
     end
 end
-
-global CplxCov;
 
 if ~isempty(dCov)
     CplxCov = ComplexCov(Cov, PCov, n_param, rescaling, sampling, dCov, dPCov);
