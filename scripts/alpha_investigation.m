@@ -67,3 +67,5 @@ opts = init_opts();
 alpha_without_dominant_poles = SzegoSymModel_without_dominant_poles.param(2)*1e4
 
 alpha_with_dominant_poles = SzegoSymModel_with_dominant_poles.param(2)*1e4
+
+% for the selected value of alpha for the hybrid method, see the script plot_local_error_circuit.m

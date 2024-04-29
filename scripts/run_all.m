@@ -6,3 +6,4 @@ run_ErrorIndicatorStudy;
 run_ConvStudies;
 alpha_investigation;
 test_higher_kmax.m
+plot_local_error_circuit.m
