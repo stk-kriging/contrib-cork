@@ -2,7 +2,7 @@
 
 ## What is this?
 
-This directory contains some code & data associated with the paper:
+This software package contains some code & data associated with the paper:
 
 Julien Bect (‡), Niklas Georg (†,§), Ulrich Römer (†), Sebastian Schöps (§),  
 __Rational kernel-based interpolation for complex-valued frequency response functions__,  
