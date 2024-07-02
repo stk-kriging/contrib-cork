@@ -1,0 +1,18 @@
+{
+    "title": "Rational kernel-based interpolation for complex-valued frequency response functions (matlab code, stk-kriging/contrib-cork)",
+
+    "creators": [
+        {
+	    "name": "Georg, Niklas",
+	    "orcid": "0000-0003-4394-336X",
+            "affiliation": "Institut für Dynamik und Schwingungen, Technische Universität Braunschweig, Braunschweig, Germany & Computational Electromagnetics Group, Technische Universität Darmstadt, Darmstadt, Germany"
+        },
+        {
+	    "name": "Bect, Julien",
+            "orcid": "0000-0002-0867-0215",
+            "affiliation": "Laboratoire des signaux et systèmes, Université Paris-Saclay, CNRS, CentraleSupélec, Gif-sur-Yvette, France"
+        }
+    ],
+
+    "license": "https://www.gnu.org/licenses/gpl-3.0-standalone.html"
+}
