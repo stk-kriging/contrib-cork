@@ -4,18 +4,19 @@
 
 This software package contains some code & data associated with the paper:
 
-Julien Bect (‡), Niklas Georg (†,§), Ulrich Römer (†), Sebastian Schöps (§),  
+Julien Bect (‡), Niklas Georg (§), Ulrich Römer (†), Sebastian Schöps (§),  
 __Rational kernel-based interpolation for complex-valued frequency response functions__,  
 [arXiv:2307.13484](https://arxiv.org/abs/2307.13484)
 
 ‡ [Laboratoire des signaux et systèmes](https://l2s.centralesupelec.fr/),
 Université Paris-Saclay, CNRS, CentraleSupélec, Gif-sur-Yvette, France.
 
-† [Institut für Dynamik und Schwingungen](https://www.tu-braunschweig.de/ids),
-Technische Universität Braunschweig, Braunschweig, Germany
-
 § [Computational Electromagnetics Group](https://www.cem.tu-darmstadt.de/),
 Technische Universität Darmstadt, Darmstadt, Germany
+
+† [Institut für Akustik und Dynamik](https://www.tu-braunschweig.de/inad),
+Technische Universität Braunschweig, Braunschweig, Germany
+
 
 ## How to use it?
 
