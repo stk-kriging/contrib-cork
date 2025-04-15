@@ -52,17 +52,24 @@ classdef ComplexCov
             obj.ub = ub;
         end
 
-        function [lb,ub] =get_bounds(obj, param0, xi,zi)
-            if isempty(obj.lb) && isempty(obj.ub)
-                lb = param0-5;
-                ub = param0+5;
+        function [lb,ub] = get_bounds (obj, param0, xi, zi)  %#ok<INUSD>
+
+            % This method is called from stk_complexcov_getdefaultbounds
+            % with raw (not rescaled) parameters
+
+            if isempty (obj.lb) && isempty (obj.ub)
+                % These bounds appear to be suitable only for logified
+                % positive parameters (i.e., assuming rescaling 'e' for all
+                % parameters).
+                lb = param0 - 5;
+                ub = param0 + 5;
             else
                 lb = obj.lb;
                 ub = obj.ub;
             end
         end
 
-        function [p0] = get_random_p0(obj)
+        function obj = set_random_param (obj)
             assert(~isempty(obj.lb)&&~isempty(obj.ub));
             p0 =zeros(obj.n_param,1);
             for i = 1:obj.n_param
@@ -75,10 +82,11 @@ classdef ComplexCov
                     stk_error('sampling option not implemented\n')
                 end
             end
+            obj = stk_set_optimizable_parameters (obj, p0);
         end
 
-        function [obj] = set_params_init(obj,param0,lnv)
-            obj.param_init_fun=@(varargin) param0;
+        function [obj] = set_params_init (obj, param0, lnv)
+            obj.param_init_fun = @(varargin) param0;
             obj.lnv = lnv;
         end
 
@@ -100,16 +108,20 @@ classdef ComplexCov
             lnv = obj.lnv;
         end
 
-        function K = CovMat(obj,param, x,y,pairwise, diff)
-            if nargin<6
-                diff=-1;
+        function K = CovMat(obj, param, x,y,pairwise, diff)
+
+            % Here, `param` is expected to contained rescaled parameters
+            % (wherever rescaling is indeed necessary)
+
+            if nargin < 6
+                diff = -1;
             end
             assert(size(x,2)==2);
 
             x_idx_r = logical(~x(:,end));  % Indices of real part data
-            x_idx_i =  logical(x(:,end));  % Indices of imag part data
+            x_idx_i = logical( x(:,end));  % Indices of imag part data
             y_idx_r = logical(~y(:,end));
-            y_idx_i = logical(y(:,end));
+            y_idx_i = logical( y(:,end));
 
             xr = x(x_idx_r, 1);
             xi = x(x_idx_i, 1);

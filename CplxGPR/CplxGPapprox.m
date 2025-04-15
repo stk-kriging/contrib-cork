@@ -1,30 +1,36 @@
-function [Mean, Var, Var_real, Var_imag, crit_opt, model] = CplxGPapprox(cov_model, xi, yi, x_cv,opts)
+function [Mean, Var, Var_real, Var_imag, crit_opt, model] = CplxGPapprox (cov_model, xi, yi, x_cv,opts)
 
 %% Real-valued representation of complex training data
 [xi_cplx, yi_cplx] = mapCplxData(xi,yi, opts.use_frf_props);
 
 
-%% Create model
-global CplxCov;
-CplxCov = set_cplx_Cov(cov_model);
-model = stk_model('stk_complexcov', 2);
-model.lognoisevariance=opts.lnv;
-if ~isempty(opts.lb) && ~isempty(opts.ub)
-    CplxCov=CplxCov.set_bounds(opts.lb, opts.ub)
+%% Create covariance (parameter object
+
+cov_param = make_ComplexCov (cov_model);
+
+if (~ isempty (opts.lb)) && (~ isempty (opts.ub))
+    cov_param = cov_param.set_bounds (opts.lb, opts.ub);
 else
     if strcmp (cov_model, 'Szego')
-        [lb,ub] = CplxCov.get_bounds();
-        lb(2) = lb(2)*(max(xi)-min(xi));
-        ub(2) =    ub(2)*(max(xi)-min(xi));
-        CplxCov=CplxCov.set_bounds(lb, ub);
+        [lb,ub] = cov_param.get_bounds ();
+        lb(2) = lb(2) * (max(xi) - min(xi));
+        ub(2) = ub(2) * (max(xi) - min(xi));
+        cov_param = cov_param.set_bounds (lb, ub);
     end
 end
 
 if isempty (opts.p0) && strcmp (cov_model, 'Szego')
-    [param0, lnv]  = CplxCov.get_params_init();
-    param0(2) = param0(2)*(max(xi)-min(xi)); % rescale w.r.t. size of interval
-    CplxCov = CplxCov.set_params_init(param0, lnv);
+    [p, lnv]  = cov_param.get_params_init ();
+    p(2) = p(2) * (max(xi) - min(xi)); % rescale w.r.t. size of interval
+    cov_param = cov_param.set_params_init (p, lnv);
 end
+
+
+%% Create model
+
+model = stk_model ('stk_complexcov', 2);
+model.param = cov_param;
+model.lognoisevariance = opts.lnv;
 
 if strcmp (cov_model, 'Szego') && isfield (opts, 'SzegoPrior')
     mode = opts.SzegoPrior(1) * (max(xi) - min(xi));
@@ -69,16 +75,20 @@ else
 end
 
 
-if isempty(opts.params)
-    %% Tune model
-    %optim_opts = stk_options_get('stk_param_estim');
-    %optim_opts.minimize_box = stk_optim_fmincon();
-    %stk_options_set('stk_param_estim', optim_opts);
-    [model, crit_opt] = tune_model(model, xi_cplx, yi_cplx, opts);
-else
-    %% Set hyper-parameters and evaluate likelihood
-    model.param = opts.params;
-    crit_opt = stk_param_proflik(model, xi_cplx, yi_cplx);
+if isempty (opts.params)
+
+    % optim_opts = stk_options_get('stk_param_estim');
+    % optim_opts.minimize_box = stk_optim_fmincon();
+    % stk_options_set('stk_param_estim', optim_opts);
+
+    % Tune model
+    [model, crit_opt] = tune_model (model, xi_cplx, yi_cplx, opts);
+
+else  % Use user-provided parameters
+    
+    model.param = stk_set_optimizable_parameters (model.param, opts.params);
+    crit_opt = stk_param_proflik (model, xi_cplx, yi_cplx);
+
 end
 
 

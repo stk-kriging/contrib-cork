@@ -1,7 +1,9 @@
-function [param0, lnv] = stk_complexcov_param_init (model, varargin)
+function [param, lnv] = stk_complexcov_param_init (model, varargin)
 
-global CplxCov;
+param = model.param;
+assert (isa (param, 'ComplexCov'));
 
-[param0, lnv] = CplxCov.get_params_init(varargin{:});
+[p0, lnv] = param.get_params_init (varargin{:});
+param = stk_set_optimizable_parameters (param, p0);
 
-end
+end % function

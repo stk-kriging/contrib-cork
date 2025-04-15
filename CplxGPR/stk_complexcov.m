@@ -1,40 +1,53 @@
-function k = stk_complexcov(param, x, y, diff, pairwise,h)
+function k = stk_complexcov (param, x, y, diff, pairwise, h)
 
 % process input arguments
-global CplxCov;
 x = double (x);
 y = double (y);
-if nargin < 4, diff = -1; end
-if nargin < 5, pairwise = false; end
-if nargin <6, h=1e-6; end
+if nargin < 4,  diff = -1;         end
+if nargin < 5,  pairwise = false;  end
+if nargin < 6,  h = 1e-6;          end
 
-rescale_flag = [CplxCov.rescaling =='e'];
-rescale_flag = rescale_flag(1:length(param));
+%----- BEGIN BLOCK
 
-param(rescale_flag)=exp(param(rescale_flag));
-K = CplxCov.CovMat(param, x,y,pairwise);
+% This BLOCK should probably be included in @ComplexCov
 
-RefMat= stk_dist (x,y,pairwise);
-assert(all(size(RefMat)==size(K)));
+% Extract optimizable parameters
+p = stk_get_optimizable_parameters (param);
 
-if diff == -1,
-    % compute the value (not a derivative)
-    k = K;
-else
-    % compute a derivative
-    if CplxCov.ana_derivatives
-        k =CplxCov.CovMat(param,x,y,pairwise,diff);
+% Get rescaling flags
+rescale_flag = (param.rescaling == 'e');
+rescale_flag = rescale_flag(1:length(p));
+
+% Rescale
+p(rescale_flag) = exp (p(rescale_flag));
+
+%----- END BLOCK
+
+if diff == -1  % Compute the value (not a derivative)
+
+    k = param.CovMat (p, x, y, pairwise);
+
+else  % Compute a derivative
+
+    if param.ana_derivatives
+
+        k = param.CovMat (p, x, y, pairwise, diff);
         if rescale_flag(diff)
-            k=k*param(diff); %chain rule (exponential rescaling)
+            k = k * p(diff);  % Chain rule (exponential rescaling)
         end
-    else %use finite differences
+
+    else % Use finite differences
+
+        k0 = param.CovMat (p, x, y, pairwise);
         if rescale_flag(diff)
-            param(diff) = param(diff)*exp(h);
+            p(diff) = p(diff) * exp(h);
         else
-            h=abs(param(diff))*h;
-            param(diff) = param(diff)+h;
+            h = abs (p(diff)) * h;
+            p(diff) = p(diff) + h;
         end
-        k = (CplxCov.CovMat(param,x,y,pairwise)-K)/h;
+        k1 = param.CovMat (p, x, y, pairwise);
+        k = (k1 - k0) / h;
+
     end
 end
 

@@ -1,5 +1,8 @@
+% make_ComplexCov is a wrapper around the constructor of ComplexCov
+%
 % Append '0P' for not including the "FRF" Pcov function
-function CplxCov = set_cplx_Cov(model)
+
+function CplxCov = make_ComplexCov (model)
 
 if all(model(end-1:end)=='0P')
     model = model(1:end-2);
@@ -102,8 +105,6 @@ if zeroPCov
     end
 end
 
-global CplxCov;
-
 if ~isempty(dCov)
     CplxCov = ComplexCov(Cov, PCov, n_param, rescaling, sampling, dCov, dPCov);
 else
@@ -119,3 +120,31 @@ if ~isempty(p0)
 end
 
 end
+
+
+%!test c = make_ComplexCov ('SLS')
+%!test c = make_ComplexCov ('SLS0P')
+
+%!test c = make_ComplexCov ('Szego')
+%!test c = make_ComplexCov ('Szego0P')
+
+%!test c = make_ComplexCov ('LS')
+%!test c = make_ComplexCov ('LS0P')
+
+%!test c = make_ComplexCov ('QS')
+%!test c = make_ComplexCov ('QS0P')
+
+%!test c = make_ComplexCov ('SCS')
+%!test c = make_ComplexCov ('SCS0P')
+
+%!test c = make_ComplexCov ('DC')
+%!test c = make_ComplexCov ('DC0P')
+
+%!test c = make_ComplexCov ('CS')
+%!test c = make_ComplexCov ('CS0P')
+
+%!test c = make_ComplexCov ('SepGauss')
+%!test c = make_ComplexCov ('SepGauss0P')
+
+%!test c = make_ComplexCov ('WhiteNoise')
+%!test c = make_ComplexCov ('WhiteNoise0P')
