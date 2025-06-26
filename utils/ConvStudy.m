@@ -15,7 +15,7 @@ function [errorsRMSE, errorsMax, Nsz, errorsRMSE_Median, errorsMax_Median] = Con
     Nsz=zeros(size(Nz));
     errorsRMSE = zeros(length(Nz),Nruns);
     errorsMax = zeros(length(Nz), Nruns);
-    if strcmp (name, 'Adap')
+    if endsWith_ (name, 'Adap')
         errorsRMSEfull = NaN(length(Nz), Nruns, 15);
         errorsMaxfull = NaN(length(Nz), Nruns,15);
     end
@@ -54,12 +54,12 @@ function [errorsRMSE, errorsMax, Nsz, errorsRMSE_Median, errorsMax_Median] = Con
         end
         Nsz(i)=length(xi);
        % try
-            if strcmp (name, 'Adap')
+            if endsWith_ (name, 'Adap')
                 [Approx, ~, ~, ~, ~, ~, ~, data,~] = method(xi, yi, x_cv);
                 for k = 1:length(data)
                     [errorsRMSEfull(i,j,k), errorsMaxfull(i,j,k)] = compute_approx_error(data{k}.Mean, y_cv);
                 end
-            elseif strcmp(name, 'Chebyshev')
+            elseif endsWith_ (name, 'Chebyshev')
                 xc = cos((2*(1:Nz(i))-1)/2/Nz(i)*pi)'; % Chebyshev nodes
                 xc = (xmax-xmin)/2*xc+(xmax+xmin)/2; % Scale and shift
                 if Nruns ==1
@@ -88,7 +88,7 @@ function [errorsRMSE, errorsMax, Nsz, errorsRMSE_Median, errorsMax_Median] = Con
 
     %% Store results
     save(['results/' name '.mat'], 'errorsRMSE', 'errorsMax', 'Nsz');
-    if strcmp(name, 'Adap')
+    if endsWith_ (name, 'Adap')
         save(['results/' name 'Full.mat'], 'errorsRMSE', 'errorsMax', 'Nsz', 'errorsRMSEfull', 'errorsMaxfull');
     end
 
@@ -100,5 +100,13 @@ function [errorsRMSE, errorsMax, Nsz, errorsRMSE_Median, errorsMax_Median] = Con
     data(:,3) = errorsMax;
     header = 'N, RMSE, Max';
     export_csv(['results/' name '.csv'], data, header);
+
+end
+
+
+function b = endsWith_ (s, t)
+
+L = length (t);
+b = ((length (s)) >= L) && (strcmp (s((end-L+1):end), t));
 
 end
